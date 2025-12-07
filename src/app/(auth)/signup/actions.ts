@@ -4,7 +4,7 @@ import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
 import streamServerClient from "@/lib/stream";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
-import { hash } from "@node-rs/argon2";
+import bcrypt from "bcryptjs";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -13,12 +13,7 @@ export async function signUp(credentials: SignUpValues) {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
 
-    const passwordHash = await hash(password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const userId = generateIdFromEntropySize(10);
 
@@ -32,8 +27,9 @@ export async function signUp(credentials: SignUpValues) {
     });
     if (existingEmail) return { error: "Email already taken" };
 
-    await prisma.$transaction(async (tx) => {
-      await tx.user.create({
+    // Create user and stream user in parallel
+    await Promise.all([
+      prisma.user.create({
         data: {
           id: userId,
           username,
@@ -41,14 +37,13 @@ export async function signUp(credentials: SignUpValues) {
           email,
           passwordHash,
         },
-      });
-
-      await streamServerClient.upsertUser({
+      }),
+      streamServerClient.upsertUser({
         id: userId,
         username,
         name: username,
-      });
-    });
+      })
+    ]);
 
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
