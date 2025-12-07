@@ -1,9 +1,16 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import { Button, ButtonProps } from "./ui/button";
+import { Button } from "./ui/button";
+
+// Extract ButtonProps from the Button component's props
+type ButtonProps = React.ComponentPropsWithoutRef<typeof Button>;
 
 interface LoadingButtonProps extends ButtonProps {
   loading: boolean;
+  className?: string;
+  disabled?: boolean;
+  children?: React.ReactNode;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export default function LoadingButton({
