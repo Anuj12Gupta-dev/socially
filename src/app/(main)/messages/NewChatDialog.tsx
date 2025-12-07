@@ -6,14 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import UserAvatar from "@/components/UserAvatar";
 import useDebounce from "@/hooks/useDebounce";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Check, Loader2, SearchIcon, X } from "lucide-react";
 import { useState } from "react";
 import { UserResponse } from "stream-chat";
-import { DefaultStreamChatGenerics, useChatContext } from "stream-chat-react";
+import { useChatContext } from "stream-chat-react";
 import { useSession } from "../SessionProvider";
 
 interface NewChatDialogProps {
@@ -27,16 +27,12 @@ export default function NewChatDialog({
 }: NewChatDialogProps) {
   const { client, setActiveChannel } = useChatContext();
 
-  const { toast } = useToast();
-
   const { user: loggedInUser } = useSession();
 
   const [searchInput, setSearchInput] = useState("");
   const searchInputDebounced = useDebounce(searchInput);
 
-  const [selectedUsers, setSelectedUsers] = useState<
-    UserResponse<DefaultStreamChatGenerics>[]
-  >([]);
+  const [selectedUsers, setSelectedUsers] = useState<UserResponse[]>([]);
 
   const { data, isFetching, isError, isSuccess } = useQuery({
     queryKey: ["stream-users", searchInputDebounced],
@@ -53,7 +49,7 @@ export default function NewChatDialog({
                 ],
               }
             : {}),
-        },
+        } as any,
         { name: 1, username: 1 },
         { limit: 15 },
       ),
@@ -61,15 +57,19 @@ export default function NewChatDialog({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const channel = client.channel("messaging", {
+      const channelData: any = {
         members: [loggedInUser.id, ...selectedUsers.map((u) => u.id)],
-        name:
-          selectedUsers.length > 1
-            ? loggedInUser.displayName +
-              ", " +
-              selectedUsers.map((u) => u.name).join(", ")
-            : undefined,
-      });
+      };
+
+      // Only add name if there are multiple users
+      if (selectedUsers.length > 1) {
+        channelData.name =
+          loggedInUser.displayName +
+          ", " +
+          selectedUsers.map((u) => u.name).join(", ");
+      }
+
+      const channel = client.channel("messaging", channelData);
       await channel.create();
       return channel;
     },
@@ -79,10 +79,7 @@ export default function NewChatDialog({
     },
     onError(error) {
       console.error("Error starting chat", error);
-      toast({
-        variant: "destructive",
-        description: "Error starting chat. Please try again.",
-      });
+      toast.error("Error starting chat. Please try again.");
     },
   });
 
@@ -162,7 +159,7 @@ export default function NewChatDialog({
 }
 
 interface UserResultProps {
-  user: UserResponse<DefaultStreamChatGenerics>;
+  user: UserResponse;
   selected: boolean;
   onClick: () => void;
 }
@@ -186,7 +183,7 @@ function UserResult({ user, selected, onClick }: UserResultProps) {
 }
 
 interface SelectedUserTagProps {
-  user: UserResponse<DefaultStreamChatGenerics>;
+  user: UserResponse;
   onRemove: () => void;
 }
 

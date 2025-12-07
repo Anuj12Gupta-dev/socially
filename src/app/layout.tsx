@@ -27,13 +27,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable}`}
+        suppressHydrationWarning
+      >
         <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
+
         <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
@@ -44,6 +48,7 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </ReactQueryProvider>
+
         <Toaster />
       </body>
     </html>

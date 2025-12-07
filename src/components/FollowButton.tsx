@@ -5,7 +5,7 @@ import kyInstance from "@/lib/ky";
 import { FollowerInfo } from "@/lib/types";
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
+import { toast } from "sonner";
 
 interface FollowButtonProps {
   userId: string;
@@ -16,8 +16,6 @@ export default function FollowButton({
   userId,
   initialState,
 }: FollowButtonProps) {
-  const { toast } = useToast();
-
   const queryClient = useQueryClient();
 
   const { data } = useFollowerInfo(userId, initialState);
@@ -46,10 +44,7 @@ export default function FollowButton({
     onError(error, variables, context) {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Something went wrong. Please try again.",
-      });
+      toast.error("Something went wrong. Please try again.");
     },
   });
 

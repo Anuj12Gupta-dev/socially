@@ -5,12 +5,10 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 import { deleteComment, submitComment } from "./actions";
 
 export function useSubmitCommentMutation(postId: string) {
-  const { toast } = useToast();
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -47,16 +45,11 @@ export function useSubmitCommentMutation(postId: string) {
         },
       });
 
-      toast({
-        description: "Comment created",
-      });
+      toast("Comment created");
     },
     onError(error) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Failed to submit comment. Please try again.",
-      });
+      toast.error("Failed to submit comment. Please try again.");
     },
   });
 
@@ -64,8 +57,6 @@ export function useSubmitCommentMutation(postId: string) {
 }
 
 export function useDeleteCommentMutation() {
-  const { toast } = useToast();
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -90,16 +81,11 @@ export function useDeleteCommentMutation() {
         },
       );
 
-      toast({
-        description: "Comment deleted",
-      });
+      toast("Comment deleted");
     },
     onError(error) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Failed to delete comment. Please try again.",
-      });
+      toast.error("Failed to delete comment. Please try again.");
     },
   });
 

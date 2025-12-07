@@ -8,7 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 
 interface LikeButtonProps {
   postId: string;
@@ -16,8 +16,6 @@ interface LikeButtonProps {
 }
 
 export default function LikeButton({ postId, initialState }: LikeButtonProps) {
-  const { toast } = useToast();
-
   const queryClient = useQueryClient();
 
   const queryKey: QueryKey = ["like-info", postId];
@@ -51,10 +49,7 @@ export default function LikeButton({ postId, initialState }: LikeButtonProps) {
     onError(error, variables, context) {
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Something went wrong. Please try again.",
-      });
+      toast.error("Something went wrong. Please try again.");
     },
   });
 

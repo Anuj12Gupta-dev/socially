@@ -1,5 +1,5 @@
 import { useSession } from "@/app/(main)/SessionProvider";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { PostsPage } from "@/lib/types";
 import {
   InfiniteData,
@@ -10,8 +10,6 @@ import {
 import { submitPost } from "./actions";
 
 export function useSubmitPostMutation() {
-  const { toast } = useToast();
-
   const queryClient = useQueryClient();
 
   const { user } = useSession();
@@ -59,16 +57,11 @@ export function useSubmitPostMutation() {
         },
       });
 
-      toast({
-        description: "Post created",
-      });
+      toast("Post created");
     },
     onError(error) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        description: "Failed to post. Please try again.",
-      });
+      toast.error("Failed to post. Please try again.");
     },
   });
 
