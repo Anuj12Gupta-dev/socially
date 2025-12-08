@@ -1,7 +1,8 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
+import { NextRequest } from "next/server";
 
-export async function PATCH() {
+export async function PATCH(_req: NextRequest) {
   try {
     const { user } = await validateRequest();
 

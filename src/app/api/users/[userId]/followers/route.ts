@@ -1,11 +1,13 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { FollowerInfo } from "@/lib/types";
+import { NextRequest } from "next/server";
 
 export async function GET(
-  req: Request,
-  { params: { userId } }: { params: { userId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ userId: string }> }
 ) {
+  const { userId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 
@@ -49,9 +51,10 @@ export async function GET(
 }
 
 export async function POST(
-  req: Request,
-  { params: { userId } }: { params: { userId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ userId: string }> }
 ) {
+  const { userId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 
@@ -90,9 +93,10 @@ export async function POST(
 }
 
 export async function DELETE(
-  req: Request,
-  { params: { userId } }: { params: { userId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ userId: string }> }
 ) {
+  const { userId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 

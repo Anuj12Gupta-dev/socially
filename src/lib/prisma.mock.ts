@@ -1,5 +1,5 @@
 // Mock Prisma client for build time
-const mockPrisma = {
+const mockPrisma: any = {
   notification: {
     findMany: async () => [],
   },
@@ -9,7 +9,7 @@ const mockPrisma = {
   post: {
     findMany: async () => [],
   },
-  $transaction: async (fn: any) => {
+  $transaction: async <T>(fn: (tx: typeof mockPrisma) => Promise<T>) => {
     if (typeof fn === 'function') {
       return fn(mockPrisma);
     }

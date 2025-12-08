@@ -1,8 +1,9 @@
 import { validateRequest } from "@/auth";
 import streamServerClient from "@/lib/stream";
 import { MessageCountInfo } from "@/lib/types";
+import { NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(_req: NextRequest) {
   try {
     const { user } = await validateRequest();
 

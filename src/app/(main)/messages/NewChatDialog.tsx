@@ -49,7 +49,7 @@ export default function NewChatDialog({
                 ],
               }
             : {}),
-        } as any,
+        } as Record<string, any>,
         { name: 1, username: 1 },
         { limit: 15 },
       ),
@@ -57,7 +57,7 @@ export default function NewChatDialog({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const channelData: any = {
+      const channelData: { members: string[]; name?: string } = {
         members: [loggedInUser.id, ...selectedUsers.map((u) => u.id)],
       };
 

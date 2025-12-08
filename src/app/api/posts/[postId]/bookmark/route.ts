@@ -1,11 +1,13 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { BookmarkInfo } from "@/lib/types";
+import { NextRequest } from "next/server";
 
 export async function GET(
-  req: Request,
-  { params: { postId } }: { params: { postId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ postId: string }> }
 ) {
+  const { postId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 
@@ -34,9 +36,10 @@ export async function GET(
 }
 
 export async function POST(
-  req: Request,
-  { params: { postId } }: { params: { postId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ postId: string }> }
 ) {
+  const { postId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 
@@ -66,9 +69,10 @@ export async function POST(
 }
 
 export async function DELETE(
-  req: Request,
-  { params: { postId } }: { params: { postId: string } },
+  req: NextRequest,
+  context: { params: Promise<{ postId: string }> }
 ) {
+  const { postId } = await context.params;
   try {
     const { user: loggedInUser } = await validateRequest();
 
