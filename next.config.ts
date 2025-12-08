@@ -7,7 +7,9 @@ const nextConfig: NextConfig = {
       dynamic: 30,
     }
   },
-  serverExternalPackages: ["@node-rs/argon2"]
+  serverExternalPackages: ["@node-rs/argon2"],
+  // Disable source maps in development to avoid warnings
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;

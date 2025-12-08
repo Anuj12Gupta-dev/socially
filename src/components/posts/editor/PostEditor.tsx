@@ -37,6 +37,7 @@ export default function PostEditor() {
   const rootProps = getRootProps();
 
   const editor = useEditor({
+    immediatelyRender: false, // Fix for SSR error
     extensions: [
       StarterKit.configure({
         bold: false,

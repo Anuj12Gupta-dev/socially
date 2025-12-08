@@ -16,15 +16,30 @@ export default async function MenuBar({ className }: MenuBarProps) {
 
   if (!user) return null;
 
-  const [unreadNotificationsCount, unreadMessagesCount] = await Promise.all([
-    prisma.notification.count({
+  let unreadNotificationsCount = 0;
+  let unreadMessagesCount = 0;
+
+  try {
+    // Fetch notification count
+    unreadNotificationsCount = await prisma.notification.count({
       where: {
         recipientId: user.id,
         read: false,
       },
-    }),
-    (await streamServerClient.getUnreadCount(user.id)).total_unread_count,
-  ]);
+    });
+
+    // Fetch message count with error handling
+    try {
+      const unreadCountResult = await streamServerClient.getUnreadCount(user.id);
+      unreadMessagesCount = unreadCountResult.total_unread_count || 0;
+    } catch (error) {
+      // Handle case where user doesn't exist in StreamChat
+      console.warn("Failed to fetch unread message count:", error);
+      unreadMessagesCount = 0;
+    }
+  } catch (error) {
+    console.error("Error fetching menu bar data:", error);
+  }
 
   return (
     <div className={className}>
