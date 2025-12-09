@@ -6,6 +6,14 @@ import { UploadThingError, UTApi } from "uploadthing/server";
 
 const f = createUploadthing();
 
+// Get the UploadThing app ID from environment variables
+// NEXT_PUBLIC_UPLOADTHING_APP_ID is available on both client and server in Next.js
+const UPLOADTHING_APP_ID = process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID;
+
+if (!UPLOADTHING_APP_ID) {
+  throw new Error("NEXT_PUBLIC_UPLOADTHING_APP_ID is not defined in environment variables");
+}
+
 export const fileRouter = {
   avatar: f({
     image: { maxFileSize: "512KB" },
@@ -22,7 +30,7 @@ export const fileRouter = {
 
       if (oldAvatarUrl) {
         const key = oldAvatarUrl.split(
-          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+          `/a/${UPLOADTHING_APP_ID}/`,
         )[1];
 
         await new UTApi().deleteFiles(key);
@@ -30,7 +38,7 @@ export const fileRouter = {
 
       const newAvatarUrl = file.url.replace(
         "/f/",
-        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        `/a/${UPLOADTHING_APP_ID}/`,
       );
 
       await Promise.all([
@@ -66,7 +74,7 @@ export const fileRouter = {
         data: {
           url: file.url.replace(
             "/f/",
-            `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+            `/a/${UPLOADTHING_APP_ID}/`,
           ),
           type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
         },

@@ -2,6 +2,13 @@ import prisma from "@/lib/prisma";
 import { UTApi } from "uploadthing/server";
 import { NextRequest } from "next/server";
 
+// Get the UploadThing app ID from environment variables
+const UPLOADTHING_APP_ID = process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID;
+
+if (!UPLOADTHING_APP_ID) {
+  throw new Error("NEXT_PUBLIC_UPLOADTHING_APP_ID is not defined in environment variables");
+}
+
 export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
@@ -33,7 +40,7 @@ export async function GET(req: NextRequest) {
     new UTApi().deleteFiles(
       unusedMedia.map(
         (m) =>
-          m.url.split(`/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)[1],
+          m.url.split(`/a/${UPLOADTHING_APP_ID}/`)[1],
       ),
     );
 
