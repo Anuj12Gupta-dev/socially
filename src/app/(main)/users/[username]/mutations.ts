@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { PostsPage } from "@/lib/types";
-import { useUploadThing } from "@/lib/uploadthing";
+import { uploadFiles } from "@/lib/uploadthing";
 import { UpdateUserProfileValues } from "@/lib/validation";
 import {
   InfiniteData,
@@ -16,8 +16,6 @@ export function useUpdateProfileMutation() {
 
   const queryClient = useQueryClient();
 
-  const { startUpload: startAvatarUpload } = useUploadThing("avatar");
-
   const mutation = useMutation({
     mutationFn: async ({
       values,
@@ -28,7 +26,7 @@ export function useUpdateProfileMutation() {
     }) => {
       return Promise.all([
         updateUserProfile(values),
-        avatar && startAvatarUpload([avatar]),
+        avatar && uploadFiles("avatar", { files: [avatar] }),
       ]);
     },
     onSuccess: async ([updatedUser, uploadResult]) => {

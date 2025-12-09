@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useDropzone } from "@uploadthing/react";
 import { ImageIcon, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import { ClipboardEvent, useRef } from "react";
@@ -29,12 +28,7 @@ export default function PostEditor() {
     removeAttachment,
     reset: resetMediaUploads,
   } = useMediaUpload();
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: startUpload,
-  });
-
-  const rootProps = getRootProps();
+  console.log(isUploading)
 
   const editor = useEditor({
     immediatelyRender: false, // Fix for SSR error
@@ -80,18 +74,15 @@ export default function PostEditor() {
     <div className="flex flex-col gap-5 rounded-2xl bg-card p-5 shadow-sm">
       <div className="flex gap-5">
         <UserAvatar avatarUrl={user.avatarUrl} className="hidden sm:inline" />
-        <div {...rootProps} className="w-full">
+        <div className="w-full">
           <EditorContent
             editor={editor}
-            className={cn(
-              "max-h-80 w-full overflow-y-auto rounded-2xl bg-background px-5 py-3",
-              isDragActive && "outline-dashed",
-            )}
+            className="max-h-80 w-full overflow-y-auto rounded-2xl bg-background px-5 py-3"
             onPaste={onPaste}
           />
-          <input {...getInputProps()} />
         </div>
       </div>
+      
       {!!attachments.length && (
         <AttachmentPreviews
           attachments={attachments}
@@ -112,7 +103,7 @@ export default function PostEditor() {
         <LoadingButton
           onClick={onSubmit}
           loading={mutation.isPending}
-          disabled={!input.trim() || isUploading}
+          disabled={(!input.trim() && attachments.length === 0) || isUploading}
           className="min-w-20"
         >
           Post
