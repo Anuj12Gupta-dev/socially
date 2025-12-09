@@ -10,7 +10,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ImageIcon, Loader2, X } from "lucide-react";
 import Image from "next/image";
-import { ClipboardEvent, useRef } from "react";
+import { ClipboardEvent, useEffect, useRef, useState } from "react";
 import { useSubmitPostMutation } from "./mutations";
 import "./styles.css";
 import useMediaUpload, { Attachment } from "./useMediaUpload";
@@ -28,7 +28,8 @@ export default function PostEditor() {
     removeAttachment,
     reset: resetMediaUploads,
   } = useMediaUpload();
-  console.log(isUploading)
+
+  const [input, setInput] = useState("");
 
   const editor = useEditor({
     immediatelyRender: false, // Fix for SSR error
@@ -41,12 +42,11 @@ export default function PostEditor() {
         placeholder: "What's crack-a-lackin'?",
       }),
     ],
+    onUpdate: ({ editor }) => {
+      // Update the input state whenever the editor content changes
+      setInput(editor.getText());
+    },
   });
-
-  const input =
-    editor?.getText({
-      blockSeparator: "\n",
-    }) || "";
 
   function onSubmit() {
     mutation.mutate(
@@ -103,7 +103,7 @@ export default function PostEditor() {
         <LoadingButton
           onClick={onSubmit}
           loading={mutation.isPending}
-          disabled={(!input.trim() && attachments.length === 0) || isUploading}
+          disabled={!input.trim() || isUploading}
           className="min-w-20"
         >
           Post
