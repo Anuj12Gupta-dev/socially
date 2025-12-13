@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     default: "socially",
   },
   description: "The social media app for gen z",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

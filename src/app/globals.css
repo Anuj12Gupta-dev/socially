@@ -47,8 +47,8 @@
   --popover: 0 0% 100%;
   --popover-foreground: 240 10% 3.9%;
 
-  --primary: 142.1 76.2% 36.3%;
-  --primary-foreground: 355.7 100% 97.3%;
+  --primary: 218 100% 60%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 240 4.8% 95.9%;
   --secondary-foreground: 240 5.9% 10%;
@@ -64,7 +64,7 @@
 
   --border: 240 5.9% 90%;
   --input: 240 5.9% 90%;
-  --ring: 142.1 76.2% 36.3%;
+  --ring: 218 100% 60%;
 
   --radius: 1rem;
 }
@@ -79,8 +79,8 @@
   --popover: 0 0% 9%;
   --popover-foreground: 0 0% 95%;
 
-  --primary: 142.1 70.6% 45.3%;
-  --primary-foreground: 144.9 80.4% 10%;
+  --primary: 218 100% 60%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
@@ -96,32 +96,8 @@
 
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
-  --ring: 142.4 71.8% 29.2%;
+  --ring: 218 100% 60%;
 }
-
-.str-chat,
-.str-chat__theme-light,
-.str-chat__theme-dark {
-  --str-chat__primary-color: hsl(var(--primary));
-  --str-chat__active-primary-color: hsl(var(--primary));
-  --str-chat__secondary-color: hsl(var(--secondary));
-  --str-chat__accent-color: hsl(var(--primary));
-
-  --str-chat__background-color: hsl(var(--background));
-  --str-chat__surface-color: hsl(var(--card));
-  --str-chat__border-color: hsl(var(--border));
-
-  --str-chat__text-color: hsl(var(--foreground));
-  --str-chat__text-low-emphasis-color: hsl(var(--muted-foreground));
-
-  --str-chat__own-message-bubble-background-color: hsl(var(--primary));
-  --str-chat__own-message-text-color: hsl(var(--primary-foreground));
-
-  --str-chat__message-bubble-border-radius: var(--radius);
-  --str-chat__button-border-radius: var(--radius);
-}
-
-
 
 @layer base {
   * {
