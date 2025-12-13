@@ -66,6 +66,48 @@ export async function GET(req: NextRequest) {
         cursor: postsCursor ? { id: postsCursor } : undefined,
       });
 
+      // Additionally search for posts with matching tags
+      if ((filter === "all" || filter === "posts") && q) {
+        try {
+          // Use Prisma's raw query to search for posts with matching tags
+          const tagFilteredPosts = await prisma.$queryRaw`SELECT p.id FROM posts p WHERE ${q} = ANY(p.tags)` as { id: string }[];
+
+          // If we found posts with matching tags, fetch the full post data
+          if (tagFilteredPosts.length > 0) {
+            const tagPostIds = tagFilteredPosts.map(p => p.id);
+            
+            // Fetch full post data for posts with matching tags
+            const tagPosts = await prisma.post.findMany({
+              where: {
+                id: {
+                  in: tagPostIds
+                }
+              },
+              include: getPostDataInclude(user.id),
+              orderBy: { createdAt: "desc" },
+              take: pageSize + 1,
+              cursor: postsCursor ? { id: postsCursor } : undefined,
+            });
+
+            // Merge the results, removing duplicates
+            const postIds = new Set(posts.map(p => p.id));
+            for (const post of tagPosts) {
+              if (!postIds.has(post.id)) {
+                posts.push(post);
+                postIds.add(post.id);
+              }
+            }
+
+            // Sort by createdAt descending and limit to pageSize
+            posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            posts = posts.slice(0, pageSize);
+          }
+        } catch (error) {
+          // If tags search fails, continue with regular search
+          console.warn("Tag search failed, continuing with regular search:", error);
+        }
+      }
+
       postsNextCursor = posts.length > pageSize ? posts[pageSize].id : null;
       posts = posts.slice(0, pageSize);
     }

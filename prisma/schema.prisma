@@ -67,6 +67,7 @@ model Post {
   bookmarks           Bookmark[]
   comments            Comment[]
   linkedNotifications Notification[]
+  tags                String[]       // Added tags property for post tagging
 
   createdAt DateTime @default(now())
 
