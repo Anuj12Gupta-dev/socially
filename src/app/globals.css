@@ -1,9 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "stream-chat-react/dist/css/v2/index.css";
 
-/* -------------------------------------------------------
-   1) Tailwind v4 theme tokens mapped to your CSS variables
---------------------------------------------------------- */
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -39,9 +37,6 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* -------------------------------------------------------
-   2) Light mode variables
---------------------------------------------------------- */
 :root {
   --background: 224 5% 95%;
   --foreground: 240 10% 3.9%;
@@ -74,9 +69,6 @@
   --radius: 1rem;
 }
 
-/* -------------------------------------------------------
-   3) Dark mode variables
---------------------------------------------------------- */
 .dark {
   --background: 20 14.3% 4.1%;
   --foreground: 0 0% 95%;
@@ -107,9 +99,30 @@
   --ring: 142.4 71.8% 29.2%;
 }
 
-/* -------------------------------------------------------
-   4) Base styles
---------------------------------------------------------- */
+.str-chat,
+.str-chat__theme-light,
+.str-chat__theme-dark {
+  --str-chat__primary-color: hsl(var(--primary));
+  --str-chat__active-primary-color: hsl(var(--primary));
+  --str-chat__secondary-color: hsl(var(--secondary));
+  --str-chat__accent-color: hsl(var(--primary));
+
+  --str-chat__background-color: hsl(var(--background));
+  --str-chat__surface-color: hsl(var(--card));
+  --str-chat__border-color: hsl(var(--border));
+
+  --str-chat__text-color: hsl(var(--foreground));
+  --str-chat__text-low-emphasis-color: hsl(var(--muted-foreground));
+
+  --str-chat__own-message-bubble-background-color: hsl(var(--primary));
+  --str-chat__own-message-text-color: hsl(var(--primary-foreground));
+
+  --str-chat__message-bubble-border-radius: var(--radius);
+  --str-chat__button-border-radius: var(--radius);
+}
+
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -31,14 +31,19 @@ export default function SearchField({ initialQuery = "" }: SearchFieldProps) {
   return (
     <form onSubmit={handleSubmit} method="GET" action="/search">
       <div className="relative">
-        <Input 
-          name="q" 
+        <Input
+          name="q"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search" 
-          className="pe-10" 
+          placeholder="Search"
+          className="pe-10"
         />
-        <SearchIcon className="absolute right-3 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground" />
+        <button
+          type="submit"
+          className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2"
+        >
+          <SearchIcon className="size-5" />
+        </button>
       </div>
     </form>
   );

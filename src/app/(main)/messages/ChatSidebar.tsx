@@ -11,7 +11,6 @@ import {
 } from "stream-chat-react";
 import { useSession } from "../SessionProvider";
 import NewChatDialog from "./NewChatDialog";
-
 interface ChatSidebarProps {
   open: boolean;
   onClose: () => void;
