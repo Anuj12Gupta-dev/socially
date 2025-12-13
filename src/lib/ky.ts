@@ -6,6 +6,7 @@ const kyInstance = ky.create({
       if (key.endsWith("At")) return new Date(value);
       return value;
     }),
+  credentials: "include", // Include credentials (cookies) with requests
 });
 
 export default kyInstance;
