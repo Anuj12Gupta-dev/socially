@@ -13,7 +13,6 @@ import { updateUserProfile } from "./actions";
 
 export function useUpdateProfileMutation() {
   const router = useRouter();
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

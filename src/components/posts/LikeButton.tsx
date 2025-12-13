@@ -17,7 +17,6 @@ interface LikeButtonProps {
 
 export default function LikeButton({ postId, initialState }: LikeButtonProps) {
   const queryClient = useQueryClient();
-
   const queryKey: QueryKey = ["like-info", postId];
 
   const { data } = useQuery({

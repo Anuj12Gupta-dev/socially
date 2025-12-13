@@ -7,16 +7,13 @@ type ButtonProps = React.ComponentPropsWithoutRef<typeof Button>;
 
 interface LoadingButtonProps extends ButtonProps {
   loading: boolean;
-  className?: string;
-  disabled?: boolean;
-  children?: React.ReactNode;
-  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export default function LoadingButton({
   loading,
   disabled,
   className,
+  children,
   ...props
 }: LoadingButtonProps) {
   return (
@@ -26,7 +23,7 @@ export default function LoadingButton({
       {...props}
     >
       {loading && <Loader2 className="size-5 animate-spin" />}
-      {props.children}
+      {children}
     </Button>
   );
 }

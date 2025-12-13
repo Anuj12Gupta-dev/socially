@@ -19,7 +19,6 @@ import { signUp } from "./actions";
 
 export default function SignUpForm() {
   const [error, setError] = useState<string>();
-
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SignUpValues>({

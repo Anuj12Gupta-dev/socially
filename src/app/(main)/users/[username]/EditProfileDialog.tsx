@@ -52,7 +52,6 @@ export default function EditProfileDialog({
   });
 
   const mutation = useUpdateProfileMutation();
-
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
 
   async function onSubmit(values: UpdateUserProfileValues) {
@@ -142,7 +141,6 @@ interface AvatarInputProps {
 
 function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
   const [imageToCrop, setImageToCrop] = useState<File>();
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function onImageSelected(image: File | undefined) {

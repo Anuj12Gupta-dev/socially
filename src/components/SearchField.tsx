@@ -40,7 +40,7 @@ export default function SearchField({ initialQuery = "" }: SearchFieldProps) {
         />
         <button
           type="submit"
-          className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
         >
           <SearchIcon className="size-5" />
         </button>

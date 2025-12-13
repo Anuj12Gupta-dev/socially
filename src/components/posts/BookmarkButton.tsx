@@ -20,7 +20,6 @@ export default function BookmarkButton({
   initialState,
 }: BookmarkButtonProps) {
   const queryClient = useQueryClient();
-
   const queryKey: QueryKey = ["bookmark-info", postId];
 
   const { data } = useQuery({

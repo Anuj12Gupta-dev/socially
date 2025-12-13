@@ -37,7 +37,7 @@ export default function SearchResults({ query, filter }: SearchResultsProps) {
             },
           });
 
-          console.log("Search API response:", response);
+        console.log("Search API response:", response);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

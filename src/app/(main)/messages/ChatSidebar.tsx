@@ -11,6 +11,7 @@ import {
 } from "stream-chat-react";
 import { useSession } from "../SessionProvider";
 import NewChatDialog from "./NewChatDialog";
+
 interface ChatSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -18,9 +19,7 @@ interface ChatSidebarProps {
 
 export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
   const { user } = useSession();
-
   const queryClient = useQueryClient();
-
   const { channel } = useChatContext();
 
   useEffect(() => {

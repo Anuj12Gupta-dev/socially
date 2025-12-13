@@ -10,9 +10,7 @@ import useInitializeChatClient from "./useInitializeChatClient";
 
 export default function Chat() {
   const chatClient = useInitializeChatClient();
-
   const { resolvedTheme } = useTheme();
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!chatClient) {

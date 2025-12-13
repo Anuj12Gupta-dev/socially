@@ -18,7 +18,6 @@ import { useDropzone } from "@uploadthing/react";
 
 export default function PostEditor() {
   const { user } = useSession();
-
   const mutation = useSubmitPostMutation();
 
   const {
